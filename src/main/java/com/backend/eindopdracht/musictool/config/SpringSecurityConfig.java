@@ -1,40 +1,55 @@
 package com.backend.eindopdracht.musictool.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private DataSource dataSource;
+
     //hier komen 2 methodes.
     //config methode (deze zit al in WebSecConfigAd). Gaat over authentication. We herdefinieren hem wel.
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
-        //dit is ook weer 1 statement
-        //{noop} staat voor niet en-coded. Users zijn wel hard-coded. Dit willen we eigenlijk niet.
-        auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}password").roles("USER")
-                .and()
-                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
+        //auth obv query
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("SELECT username, password, enabled FROM my_users WHERE username=?")
+                .authoritiesByUsernameQuery("SELECT username, authority FROM my_authorities AS a WHERE username=?");
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 
     //endpoints beveiligen met HTTP Basic Authentication
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        //het volgende is eigenlijk 1 statement
+        //het volgende is eigenlijk 1 statement. Elke conditie wordt 1 voor 1 gecheckt.
         http
                 //http basic auth
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN") //HIER ken je dus rollen toe.
+                .antMatchers("/customers/**").hasRole("USER")
+                .antMatchers( "/admin/**").hasRole("ADMIN")
+                .antMatchers("/authenticated/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
