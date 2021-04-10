@@ -20,15 +20,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    //hier komen 2 methodes.
-    //config methode (deze zit al in WebSecConfigAd). Gaat over authentication. We herdefinieren hem wel.
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         //auth obv query
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("SELECT username, password, enabled FROM my_users WHERE username=?")
-                .authoritiesByUsernameQuery("SELECT username, authority FROM my_authorities AS a WHERE username=?");
+        auth.jdbcAuthentication().dataSource(dataSource);
+//                .usersByUsernameQuery("SELECT username, password, enabled FROM my_users WHERE username=?")
+//                .authoritiesByUsernameQuery("SELECT username, authority FROM my_authorities AS a WHERE username=?");
     }
 
     @Bean
@@ -45,13 +43,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 //http basic auth
                 .httpBasic()
-                .and()
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/customers/**").hasRole("USER")
-                .antMatchers( "/admin/**").hasRole("ADMIN")
-                .antMatchers("/authenticated/**").authenticated()
+                    .antMatchers("/customers/**").hasRole("USER")
+                    .antMatchers( "/admin/**").hasRole("ADMIN")
+                    .antMatchers("/authenticated/**").authenticated()
                 .anyRequest().permitAll()
-                .and()
+                    .and()
                 .csrf().disable()
                 .formLogin().disable();
     }
