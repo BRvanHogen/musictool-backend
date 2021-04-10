@@ -17,7 +17,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //dit is ook weer 1 statement
-        //{noop} staat voor niet en-coded
+        //{noop} staat voor niet en-coded. Users zijn wel hard-coded. Dit willen we eigenlijk niet.
         auth.inMemoryAuthentication()
                 .withUser("user").password("{noop}password").roles("USER")
                 .and()
@@ -34,7 +34,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN") //HIER ken je dus rollen toe.
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
