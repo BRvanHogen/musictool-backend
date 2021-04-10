@@ -16,10 +16,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-//        auth.inMemoryAuthentication()
-//                .withUser("user").password("{noop}password").roles("USER")
-//                .and()
-//                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
+        //dit is ook weer 1 statement
+        //{noop} staat voor niet en-coded
+        auth.inMemoryAuthentication()
+                .withUser("user").password("{noop}password").roles("USER")
+                .and()
+                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
     }
 
     //endpoints beveiligen met HTTP Basic Authentication
@@ -32,6 +34,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
