@@ -18,15 +18,11 @@ import javax.sql.DataSource;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
+    public CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        //auth obv query
-        auth.jdbcAuthentication().dataSource(dataSource);
-//                .usersByUsernameQuery("SELECT username, password, enabled FROM my_users WHERE username=?")
-//                .authoritiesByUsernameQuery("SELECT username, authority FROM my_authorities AS a WHERE username=?");
+        auth.userDetailsService(customUserDetailsService);
     }
 
     @Bean
@@ -47,6 +43,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/customers/**").hasRole("USER")
                     .antMatchers( "/admin/**").hasRole("ADMIN")
+                    .antMatchers("/users/**").hasRole("ADMIN")
                     .antMatchers("/authenticated/**").authenticated()
                 .anyRequest().permitAll()
                     .and()
