@@ -1,4 +1,4 @@
-package com.backend.eindopdracht.musictool.config;
+package com.backend.eindopdracht.musictool.service;
 
 import com.backend.eindopdracht.musictool.exceptions.UsernameNotFoundException;
 import com.backend.eindopdracht.musictool.model.Authority;

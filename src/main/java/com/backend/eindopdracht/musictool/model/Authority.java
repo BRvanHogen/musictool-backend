@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@IdClass(AuthorityKey.class)
+@IdClass(AuthorityKey.class) //de AuthorityKey class bestaat alleen maar omdat Authority 2 ID's heeft (username en authority)
 @Table(name = "authorities")
 public class Authority implements Serializable {
 
