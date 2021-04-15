@@ -3,6 +3,7 @@ package com.backend.eindopdracht.musictool.service;
 import com.backend.eindopdracht.musictool.model.Project;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ProjectService {
 
@@ -11,4 +12,6 @@ public interface ProjectService {
     public abstract String createProject(Project project);
 
     public abstract void deleteProject(String name);
+
+    public abstract Optional<Project> getProject(String name);
 }

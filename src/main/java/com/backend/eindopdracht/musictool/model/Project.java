@@ -9,12 +9,11 @@ import javax.persistence.Table;
 @Table(name = "projects")
 public class Project {
 
-
+    @Id
     @Column
     private String name;
     @Column
     private String workingTitle;
-    @Id
     @Column
     private Long id;
 

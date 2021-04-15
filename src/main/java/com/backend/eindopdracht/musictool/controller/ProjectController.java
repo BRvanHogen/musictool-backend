@@ -21,6 +21,12 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectService.getProjects());
     }
 
+    @GetMapping(value = "/{name}")
+    public ResponseEntity<Object> getProject(@PathVariable("name") String name) {
+        return ResponseEntity.ok().body(projectService.getProject(name));
+    }
+
+
     @PostMapping(value = "")
     public ResponseEntity<Object> createProject(@RequestBody Project project) {
         String newName = projectService.createProject(project);
