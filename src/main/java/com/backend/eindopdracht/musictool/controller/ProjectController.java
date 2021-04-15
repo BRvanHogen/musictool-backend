@@ -1,0 +1,40 @@
+package com.backend.eindopdracht.musictool.controller;
+
+import com.backend.eindopdracht.musictool.model.Project;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.backend.eindopdracht.musictool.service.ProjectService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+
+@RestController
+@RequestMapping(value = "/projects")
+public class ProjectController {
+
+    @Autowired
+    private ProjectService projectService;
+
+    @GetMapping(value = "")
+    public ResponseEntity<Object> getProjects() {
+        return ResponseEntity.ok().body(projectService.getProjects());
+    }
+
+    @PostMapping(value = "")
+    public ResponseEntity<Object> createProject(@RequestBody Project project) {
+        String newName = projectService.createProject(project);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{name}")
+                .buildAndExpand(newName).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping (value = "{name}")
+    public ResponseEntity<Object> deleteProject(@PathVariable("username") String name) {
+        projectService.deleteProject(name);
+        return ResponseEntity.noContent().build();
+    }
+}
+
