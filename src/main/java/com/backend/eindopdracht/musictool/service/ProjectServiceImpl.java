@@ -1,5 +1,6 @@
 package com.backend.eindopdracht.musictool.service;
 
+import com.backend.eindopdracht.musictool.exceptions.RecordNotFoundException;
 import com.backend.eindopdracht.musictool.repository.ProjectRepository;
 import com.backend.eindopdracht.musictool.model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Optional<Project> getProject(String name) {
         return projectRepository.findById(name);
+    }
+
+    @Override
+    public void updateProject(String name, Project newProject) {
+        if (!projectRepository.existsById(name)) throw new RecordNotFoundException();
+        Project project = projectRepository.findById(name).get();
+        project.setName(newProject.getName());
+        project.setWorkingTitle(newProject.getWorkingTitle());
+        project.setId(newProject.getId());
+        projectRepository.save(project);
     }
 }

@@ -37,6 +37,12 @@ public class ProjectController {
         return ResponseEntity.created(location).build();
     }
 
+    @PutMapping(value = "/{name}")
+    public ResponseEntity<Object> updateProject(@PathVariable("name") String name, @RequestBody Project project) {
+        projectService.updateProject(name, project);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping (value = "{name}")
     public ResponseEntity<Object> deleteProject(@PathVariable("username") String name) {
         projectService.deleteProject(name);

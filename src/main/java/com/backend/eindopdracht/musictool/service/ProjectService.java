@@ -14,4 +14,6 @@ public interface ProjectService {
     public abstract void deleteProject(String name);
 
     public abstract Optional<Project> getProject(String name);
+
+    public abstract void updateProject(String name, Project project);
 }
