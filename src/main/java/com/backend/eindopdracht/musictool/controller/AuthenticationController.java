@@ -32,6 +32,7 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(principal);
     }
 
+    @CrossOrigin
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
