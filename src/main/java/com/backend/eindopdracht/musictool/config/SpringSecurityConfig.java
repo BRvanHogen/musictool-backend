@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +30,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService);
     }
+
 
     @Override
     @Bean
@@ -50,6 +52,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/customers/**").hasRole("USER")
                 .antMatchers("/projects/**").hasRole("USER")
+                .antMatchers("/projects/**").hasRole("ADMIN")
+                .antMatchers("/comments/**").hasRole("ADMIN")
+                .antMatchers("/comments/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/authenticated/**").authenticated()

@@ -1,6 +1,7 @@
 package com.backend.eindopdracht.musictool.service.comment;
 
 import com.backend.eindopdracht.musictool.model.Comment;
+import com.backend.eindopdracht.musictool.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
