@@ -4,39 +4,40 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.Instant;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Entity
 @Table(name = "comments")
 public class Comment {
 
-
     @Id
     @Column
-    private Long id;
+    private final Long id;
     @Column
     private String textareaInput;
     @Column
     private String byUser;
     @Column
-    private Date date;
+    private final Instant timestamp;
+
+    private static final AtomicLong idCounter = new AtomicLong();
+
 
     public Comment() {
+        this.id = idCounter.incrementAndGet();
+        this.timestamp = Instant.now();
     }
 
-    public Comment(Long id, String textareaInput, String byUser, Date date) {
-        this.id = id;
+    public Comment(Long id, Instant timestamp, String textareaInput, String byUser) {
         this.textareaInput = textareaInput;
         this.byUser = byUser;
-        this.date = date;
+        this.timestamp = timestamp;
+        this.id = id;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTextareaInput() {
@@ -55,11 +56,9 @@ public class Comment {
         this.byUser = byUser;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public Instant getTimestamp() {
+        return timestamp;
     }
 }
+
+
