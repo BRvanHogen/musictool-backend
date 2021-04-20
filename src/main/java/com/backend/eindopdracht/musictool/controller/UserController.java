@@ -12,8 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000/**")
 @RestController
-@CrossOrigin
 @RequestMapping(value = "/users")
 public class UserController {
 
@@ -25,7 +25,8 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-//    @CrossOrigin(origins = "https://localhost:8444/users/{username}")
+
+    @CrossOrigin(origins = "http://localhost:3000/**", allowedHeaders = "*")
     @GetMapping(value = "/{username}")
     public ResponseEntity<Object> getUser(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getUser(username));
