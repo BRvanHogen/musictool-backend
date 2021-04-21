@@ -83,6 +83,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "XMLHttpRequest"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/users/**", configuration);
+        source.registerCorsConfiguration("/authenticate/**", configuration);
         return source;
     }
 }
