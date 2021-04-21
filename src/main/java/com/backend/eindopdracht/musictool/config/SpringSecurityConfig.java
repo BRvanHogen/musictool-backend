@@ -64,8 +64,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/projects/**").hasRole("ADMIN")
                 .antMatchers("/comments/**").hasRole("ADMIN")
                 .antMatchers("/comments/**").hasRole("USER")
+                .antMatchers("/comments/**").hasRole("ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/users/**").hasRole("ADMIN")
+                //let op onderstaande regel. Moest om registratie mogelijk te maken
+                .antMatchers("/users/**").permitAll()
                 .antMatchers("/authenticated/**").authenticated()
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().permitAll()
@@ -84,6 +87,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/users/**", configuration);
         source.registerCorsConfiguration("/authenticate/**", configuration);
+        source.registerCorsConfiguration("/projects/**", configuration);
+        source.registerCorsConfiguration("/comments/**", configuration);
         return source;
     }
 }
