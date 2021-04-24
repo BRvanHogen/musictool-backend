@@ -1,9 +1,7 @@
 package com.backend.eindopdracht.musictool.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "projects")
@@ -16,6 +14,9 @@ public class Project {
     private String workingTitle;
     @Column
     private Long id;
+
+    @OneToMany(mappedBy = "project")
+    private Set<Soundfile> soundfiles;
 
     public Project () {}
         public Project (String name, String workingTitle, long id) {
